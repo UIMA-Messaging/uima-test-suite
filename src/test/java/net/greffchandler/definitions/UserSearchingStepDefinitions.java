@@ -7,7 +7,7 @@ import net.greffchandler.clients.identityClient.IdentityClientFacade;
 import net.greffchandler.clients.identityClient.models.PaginatedResults;
 import net.greffchandler.clients.identityClient.models.User;
 
-public class IdentityClientDefinitions {
+public class UserSearchingStepDefinitions {
 
     private PaginatedResults<User> searchResults;
     private String query;
