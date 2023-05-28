@@ -13,7 +13,7 @@ import org.apache.http.util.EntityUtils;
 
 public class HttpClientHelper {
 
-    public static <T> T performRequest(HttpRequestType requestType, String uri, Object body, Class<T> responseType) throws Exception {
+    public static <T> T performRequest(HttpRequestType requestType, String uri, Object body, Class<T> responseType, String accessToken) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
         HttpRequestBase httpRequest = switch (requestType) {
@@ -27,6 +27,10 @@ public class HttpClientHelper {
             StringEntity stringEntity = new StringEntity(body.toString(), ContentType.APPLICATION_JSON);
             assert httpRequest instanceof HttpEntityEnclosingRequestBase;
             ((HttpEntityEnclosingRequestBase) httpRequest).setEntity(stringEntity);
+        }
+
+        if (accessToken != null) {
+            httpRequest.addHeader("Authorization", "Bearer " + accessToken);
         }
 
         HttpResponse response = httpClient.execute(httpRequest);
@@ -47,16 +51,8 @@ public class HttpClientHelper {
         }
     }
 
-    public static String performRequest(String uri) throws Exception {
-        return performRequest(HttpRequestType.GET, uri, null, String.class);
-    }
-
-    public static <T> T performRequest(String uri, Class<T> responseType) throws Exception {
-        return performRequest(HttpRequestType.GET, uri, null, responseType);
-    }
-
-    public static String performRequest(HttpRequestType requestType, String uri) throws Exception {
-        return performRequest(requestType, uri, null, String.class);
+    public static <T> T performRequest(HttpRequestType requestType, String uri, Object body, Class<T> responseType) throws Exception {
+        return performRequest(requestType, uri, body, responseType, null);
     }
 
     public static boolean isResponseSuccessful(HttpResponse response) {

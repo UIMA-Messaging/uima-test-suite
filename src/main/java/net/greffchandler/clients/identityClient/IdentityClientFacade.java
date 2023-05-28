@@ -16,9 +16,9 @@ import java.util.List;
 public class IdentityClientFacade {
 
     private static final String identityApiBaseUrl = "https://greffchandler.net/";
+    private static final String searchEndpoint = "api/identity/users/search/";
 
     public static PaginatedResults<User> getUsersByQuery(String query, int count, int page) throws Exception {
-        String searchEndpoint = "api/identity/users/search/";
 
         URI uri = new URIBuilder(identityApiBaseUrl)
                 .setPath(searchEndpoint + query)
@@ -27,7 +27,7 @@ public class IdentityClientFacade {
                 .build();
 
         System.out.println("Performing GET request to `" + uri.toString() + "`...");
-        String body = HttpClientHelper.performRequest(uri.toString());
+        String body = HttpClientHelper.performRequest(HttpRequestType.GET, uri.toString(), null, String.class);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
