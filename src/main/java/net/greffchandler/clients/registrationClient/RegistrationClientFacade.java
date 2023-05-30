@@ -25,6 +25,8 @@ public class RegistrationClientFacade {
                 .setPath(registerEndpoint)
                 .build();
 
+        System.out.println("Performing POST request to `" + uri.toString() + "`...");
+
         return HttpClientHelper.performRequest(HttpRequestType.POST, uri.toString(), basicUser, RegisteredUser.class, accessToken);
     }
 
@@ -34,6 +36,8 @@ public class RegistrationClientFacade {
         URI uri = new URIBuilder(registrationApiBaseUrl)
                 .setPath(unregisterEndpoint + "/" + id)
                 .build();
+
+        System.out.println("Performing DELETE request to `" + uri.toString() + "`...");
 
         HttpClientHelper.performRequest(HttpRequestType.DELETE, uri.toString(), null, null, accessToken);
     }

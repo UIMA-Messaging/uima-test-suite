@@ -1,7 +1,7 @@
-Feature: Users can register and unregister
-  User should be able to create an account and delete their accounts
+Feature: Users can register a new account
+  User should be able to create an account
 
-  Scenario Outline: Search results has results
+  Scenario Outline: User should be able to create an account
     Given A user wants to register with display name "<displayName>"
     When An account registration is performed
     Then A registered user account should have "<displayName>"

@@ -1,5 +1,6 @@
 package net.greffchandler.helpers.http;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.HttpResponse;
@@ -10,6 +11,11 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 public class HttpClientHelper {
 
@@ -23,8 +29,11 @@ public class HttpClientHelper {
             case PUT -> new HttpPut(uri);
         };
 
+        ObjectMapper objectMapper = new ObjectMapper();
+
         if (body != null) {
-            StringEntity stringEntity = new StringEntity(body.toString(), ContentType.APPLICATION_JSON);
+            String json = objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL).writerWithDefaultPrettyPrinter().writeValueAsString(body);
+            StringEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
             assert httpRequest instanceof HttpEntityEnclosingRequestBase;
             ((HttpEntityEnclosingRequestBase) httpRequest).setEntity(stringEntity);
         }
@@ -35,18 +44,14 @@ public class HttpClientHelper {
 
         HttpResponse response = httpClient.execute(httpRequest);
 
-        if (!isResponseSuccessful(response)) {
-            throw new Exception("Request to `" + uri + "` was unsuccessful with status code " + response.getStatusLine().getStatusCode());
-        }
-
         String responseBody = EntityUtils.toString(response.getEntity());
 
-        if (responseType.equals(String.class)) {
+        if (responseType == null) {
+            return null;
+        }else if (responseType.equals(String.class)) {
             return responseType.cast(responseBody);
         } else {
-            ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-
             return objectMapper.readValue(responseBody, responseType);
         }
     }

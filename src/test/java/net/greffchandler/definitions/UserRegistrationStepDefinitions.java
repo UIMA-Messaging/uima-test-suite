@@ -1,7 +1,5 @@
 package net.greffchandler.definitions;
 
-import io.cucumber.java.AfterStep;
-import io.cucumber.java.BeforeStep;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -18,12 +16,6 @@ public class UserRegistrationStepDefinitions {
     private RegisteredUser user;
     private String accessToken;
 
-    @BeforeStep
-    public void getAccessToken() throws Exception {
-        TokenResponse tokenResponse = AuthClientFacade.fetchAuthToken();
-        this.accessToken = tokenResponse.getAccessToken();
-    }
-
     @Given("A user wants to register with display name {string}")
     public void aUserWantsToRegisterWithDisplayName(String displayName) {
         this.displayName = displayName;
@@ -31,18 +23,17 @@ public class UserRegistrationStepDefinitions {
 
     @When("An account registration is performed")
     public void anAccountRegistrationIsPerformed() throws Exception {
-        user = RegistrationClientFacade.registerUser(displayName, accessToken);
+        TokenResponse tokenResponse = AuthClientFacade.fetchAuthToken();
+        this.accessToken = tokenResponse.getAccessToken();
+        this.user = RegistrationClientFacade.registerUser(displayName, accessToken);
     }
 
     @Then("A registered user account should have {string}")
     public void aRegisteredUserAccountShouldHave(String displayName) throws Exception {
-        if (!Objects.equals(user.getDisplayName(), displayName)) {
+        if (!Objects.equals(this.user.getDisplayName(), displayName)) {
             throw new Exception("Registered user display name does not match created one");
         }
+        RegistrationClientFacade.unregisterUser(this.user.getId(), accessToken);
     }
 
-    @AfterStep
-    public void unregisterAccount() throws Exception {
-        RegistrationClientFacade.unregisterUser(user.getId(), accessToken);
-    }
 }
