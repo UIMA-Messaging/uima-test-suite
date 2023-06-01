@@ -34,6 +34,7 @@ public class UserRegistrationStepDefinitions {
             throw new Exception("Registered user display name does not match created one");
         }
         RegistrationClientFacade.unregisterUser(this.user.getId(), accessToken);
+        System.out.println("User account registered successfully");
     }
 
 }

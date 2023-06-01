@@ -36,6 +36,7 @@ public class UserUnregistrationStepDefinition {
         if (search != null) {
             throw new Exception("User deregistration failed as user still exists.");
         }
+        System.out.println("User account registered successfully");
     }
 
 }
