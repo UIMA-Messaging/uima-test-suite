@@ -15,5 +15,5 @@ jobs:
       - name: Run UIMA Regression Tests
         uses: UIMA-Messaging/uima-test-suite@master
         with:
-          input1: ${{ secrets.INPUT_1 }}
-          input2: ${{ secrets.INPUT_2 }}
+          input1: hello
+          input2: world
