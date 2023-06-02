@@ -8,7 +8,7 @@ import org.apache.http.client.utils.URIBuilder;
 import java.net.URI;
 
 public class AuthClientFacade {
-    private static final String authApiBaseUrl = "https://greffchandler.net/";
+    private static final String authApiBaseUrl = "https://staging.greffchandler.net/";
     private static final String tokenCreateEndpoint = "api/auth/tokens/create";
 
     public static TokenResponse fetchAuthToken() throws Exception {

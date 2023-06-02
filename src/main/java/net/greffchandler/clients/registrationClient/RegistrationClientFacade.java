@@ -13,7 +13,7 @@ import java.net.URI;
 
 public class RegistrationClientFacade {
 
-    private static final String registrationApiBaseUrl = "https://greffchandler.net/";
+    private static final String registrationApiBaseUrl = "https://staging.greffchandler.net/";
     private static final String registerEndpoint = "protected/api/registrations/users/register/";
     private static final String unregisterEndpoint = "protected/api/registrations/users/unregister/";
 

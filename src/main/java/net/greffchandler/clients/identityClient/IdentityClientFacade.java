@@ -16,7 +16,7 @@ import java.util.List;
 
 public class IdentityClientFacade {
 
-    private static final String identityApiBaseUrl = "https://greffchandler.net/";
+    private static final String identityApiBaseUrl = "https://staging.greffchandler.net/";
     private static final String searchEndpoint = "api/identity/users/search/";
     private static final String searchUsernameEndpoint = "api/identity/users/username/";
 
