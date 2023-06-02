@@ -1,0 +1,19 @@
+name: UIMA Regression Tests
+description: Run UIMA regression test suite using cucumber and gherkin scenarios.
+inputs:
+  input1:
+    description: 'Input 1 description'
+    required: true
+  input2:
+    description: 'Input 2 description'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - name: Echo Input 1
+      shell: bash
+      run: 'echo "Input 1: ${{ inputs.input1 }}"'
+
+    - name: Echo Input 2
+      shell: bash
+      run: 'echo "Input 2: ${{ inputs.input2 }}"'
