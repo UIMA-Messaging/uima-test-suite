@@ -22,23 +22,12 @@ public class HttpClientHelper {
     public static <T> T performRequest(HttpRequestType requestType, String uri, Object body, Class<T> responseType, String accessToken) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
 
-        HttpRequestBase httpRequest;
-        switch (requestType) {
-            case GET:
-                httpRequest = new HttpGet(uri);
-                break;
-            case POST:
-                httpRequest = new HttpPost(uri);
-                break;
-            case DELETE:
-                httpRequest = new HttpDelete(uri);
-                break;
-            case PUT:
-                httpRequest = new HttpPut(uri);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
+        HttpRequestBase httpRequest = switch (requestType) {
+            case GET -> new HttpGet(uri);
+            case POST -> new HttpPost(uri);
+            case DELETE -> new HttpDelete(uri);
+            case PUT -> new HttpPut(uri);
+        };
 
         ObjectMapper objectMapper = new ObjectMapper();
 
