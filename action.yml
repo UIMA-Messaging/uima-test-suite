@@ -12,11 +12,13 @@ runs:
   steps:
     - name: Echo Input 1
       shell: bash
-      run: 'echo "Input 1: ${{ inputs.input1 }}"'
+      run: |
+        echo "Input 1: ${{ inputs.input1 }}"
 
     - name: Echo Input 2
       shell: bash
-      run: 'echo "Input 2: ${{ inputs.input2 }}"'
+      run: |
+        echo "Input 2: ${{ inputs.input2 }}"
 
     - name: Cucumber Tests
       shell: bash
