@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -18,10 +19,13 @@ public class ExchangeKeys {
         ExchangeKeys keys = new ExchangeKeys();
         keys.setIdentityKey(generateHexString());
         keys.setSignedPreKey(generateHexString());
-        keys.setOneTimePreKeys(IntStream.range(0, 200)
-                .mapToObj(i -> generateHexString())
-                .toList()
-                .toArray(new String[0]));
+
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 200; i++) {
+            list.add(generateHexString());
+        }
+
+        keys.setOneTimePreKeys(list.toArray(new String[0]));
         keys.setSignature("thisIsASignature");
         return keys;
     }
