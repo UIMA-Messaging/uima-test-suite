@@ -17,3 +17,7 @@ runs:
     - name: Echo Input 2
       shell: bash
       run: 'echo "Input 2: ${{ inputs.input2 }}"'
+
+    - name: Cucumber Tests
+      shell: bash
+      run: 'mvn clean test'
