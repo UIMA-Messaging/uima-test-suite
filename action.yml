@@ -13,13 +13,13 @@ runs:
     - name: Echo Input 1
       shell: bash
       run: |
-        echo "Input 1: ${{ inputs.input1 }}"
-
+        echo ${{ inputs.input1 }}
     - name: Echo Input 2
       shell: bash
       run: |
-        echo "Input 2: ${{ inputs.input2 }}"
-
+        echo ${{ inputs.input2 }}
     - name: Cucumber Tests
       shell: bash
-      run: 'mvn clean test'
+      run: |
+        mvn -version
+        mvn clean test
