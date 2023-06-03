@@ -1,5 +1,5 @@
 name: Run java test in a workflow
-description: Run tests from a java project as part of you workflows.
+description: Run tests from a java project as part of your workflows.
 inputs:
   repo:
     description: 'Repository URL where Java tests reside in'
@@ -23,9 +23,11 @@ runs:
           git clone $REPO_URL
         fi
 
+        echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
+
     - name: Run Java Tests
       shell: bash
       run: |
-        echo $REPO_NAME
-        cd $REPO_NAME
+        echo ${{ env.REPO_NAME }}
+        cd ${{ env.REPO_NAME }}
         mvn clean test
