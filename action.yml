@@ -1,8 +1,8 @@
-name: UIMA Regression Tests
-description: Run UIMA regression test suite using cucumber and gherkin scenarios.
+name: Run java test in a workflow
+description: Run tests from a java project as part of you workflows.
 inputs:
   repo:
-    description: 'Repository URL where Cucumber Java tests reside in'
+    description: 'Repository URL where Java tests reside in'
     required: true
   branch:
     description: 'Optional branch to target tests on a specific branch'
@@ -10,17 +10,21 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Clone Cucumber Repository
+    - name: Clone Java Repository
       shell: bash
       run: |
-        echo ${{ inputs.repo }}
-        echo ${{ inputs.branch }}
+        REPO_URL="${{ inputs.repo }}"
+        REPO_NAME=$(basename $REPO_URL .git)
+        echo "Repository Name: $REPO_NAME"
 
-        REPO_URL="https://github.com/UIMA-Messaging/uima-test-suite.git"
-        git clone $REPO_URL
+        if [ -n "${{ inputs.branch }}" ]; then
+          git clone --branch ${{ inputs.branch }} $REPO_URL
+        else
+          git clone $REPO_URL
+        fi
 
-    - name: Run Cucumber Tests
+    - name: Run Java Tests
       shell: bash
       run: |
-        cd uima-test-suite
+        cd $REPO_NAME
         mvn clean test
