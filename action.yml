@@ -13,17 +13,9 @@ runs:
     - name: Checkout Action Repository
       shell: bash
       run: |
-        REPO="UIMA-Messaging/uima-test-suite"
-        REPO_OWNER=$(echo $REPO | cut -d'/' -f1)
-        REPO_NAME=$(echo $REPO | cut -d'/' -f2)
-        API_URL="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$GITHUB_WORKFLOW/runs/$GITHUB_RUN_ID"
-        AUTH_HEADER="Authorization: Bearer $GITHUB_TOKEN"
-        echo $API_URL
-        RESPONSE=$(curl -sSL -H "$AUTH_HEADER" "$API_URL")
-        ACTION_REPO_URL=$(echo "$RESPONSE" | jq -r '.repository.clone_url')
-        ACTION_BRANCH=$(echo "$RESPONSE" | jq -r '.head_branch')
-
-        git clone --branch $ACTION_BRANCH $ACTION_REPO_URL
+        REPO_URL="https://github.com/UIMA-Messaging/uima-test-suite.git"
+        REPO_NAME=$(basename $REPO_URL .git)
+        git clone --branch ${{ github.ref }} $REPO_URL
         cd $REPO_NAME
 
     - name: Echo Input 1
@@ -39,4 +31,5 @@ runs:
     - name: Cucumber Tests
       shell: bash
       run: |
+        mvn -version
         mvn clean test
