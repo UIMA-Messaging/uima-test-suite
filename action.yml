@@ -18,11 +18,10 @@ runs:
         REPO_NAME=$(echo $REPO | cut -d'/' -f2)
         API_URL="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$GITHUB_WORKFLOW/runs/$GITHUB_RUN_ID"
         AUTH_HEADER="Authorization: Bearer $GITHUB_TOKEN"
+        echo $API_URL
         RESPONSE=$(curl -sSL -H "$AUTH_HEADER" "$API_URL")
         ACTION_REPO_URL=$(echo "$RESPONSE" | jq -r '.repository.clone_url')
         ACTION_BRANCH=$(echo "$RESPONSE" | jq -r '.head_branch')
-        
-        echo $ACTION_REPO_URL
 
         git clone --branch $ACTION_BRANCH $ACTION_REPO_URL
         cd $REPO_NAME
