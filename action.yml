@@ -27,5 +27,6 @@ runs:
       shell: bash
       run: |
         ls
+        echo $REPO_NAME
         cd $REPO_NAME
         mvn clean test
