@@ -19,7 +19,7 @@ runs:
         API_URL="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$GITHUB_WORKFLOW/runs/$GITHUB_RUN_ID"
         AUTH_HEADER="Authorization: Bearer $GITHUB_TOKEN"
         RESPONSE=$(curl -sSL -H "$AUTH_HEADER" "$API_URL")
-        ACTION_REPO_URL=$(echo "$RESPONSE" | jq -r '.repository.url')
+        ACTION_REPO_URL=$(echo "$RESPONSE" | jq -r '.repository.clone_url')
         ACTION_BRANCH=$(echo "$RESPONSE" | jq -r '.head_branch')
 
         git clone --branch $ACTION_BRANCH $ACTION_REPO_URL
