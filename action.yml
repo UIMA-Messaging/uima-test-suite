@@ -26,7 +26,6 @@ runs:
     - name: Run Java Tests
       shell: bash
       run: |
-        ls
         echo $REPO_NAME
         cd $REPO_NAME
         mvn clean test
