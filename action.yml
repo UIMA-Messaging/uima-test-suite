@@ -10,8 +10,20 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    - name: Checkout Action Repository
+      shell: bash
+      run: |
+        REPO="UIMA-Messaging/uima-test-suite"
+        REPO_OWNER=$(echo $REPO | cut -d'/' -f1)
+        REPO_NAME=$(echo $REPO | cut -d'/' -f2)
+        API_URL="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/actions/workflows/$GITHUB_WORKFLOW/runs/$GITHUB_RUN_ID"
+        AUTH_HEADER="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
+        RESPONSE=$(curl -sSL -H "$AUTH_HEADER" "$API_URL")
+        ACTION_REPO_URL=$(echo "$RESPONSE" | jq -r '.repository.url')
+        ACTION_BRANCH=$(echo "$RESPONSE" | jq -r '.head_branch')
+
+        git clone --branch $ACTION_BRANCH $ACTION_REPO_URL
+        cd $REPO_NAME
 
     - name: Echo Input 1
       shell: bash
